@@ -1,7 +1,7 @@
-FROM elixir:1.9.0-alpine AS build
+FROM elixir:1.11.4-alpine as build
 
 # install build dependencies
-RUN apk add --no-cache build-base npm git python
+RUN apk add --no-cache build-base npm git python3
 
 # prepare build dir
 WORKDIR /app
@@ -34,17 +34,18 @@ COPY lib lib
 RUN mix do compile, release
 
 # prepare release image
-FROM alpine:3.9 AS app
-RUN apk add --no-cache openssl ncurses-libs
+FROM alpine:3.14.2 AS app
+RUN apk add --no-cache openssl ncurses-libs bash postgresql-client
 
+RUN mkdir /app
 WORKDIR /app
 
-RUN chown nobody:nobody /app
-
-USER nobody:nobody
-
 COPY --from=build --chown=nobody:nobody /app/_build/prod/rel/hello_heroku ./
+COPY entrypoint.sh .
+
+RUN chown -R nobody: /app
+USER nobody
 
 ENV HOME=/app
 
-CMD ["bin/hello_heroku", "start"]
+CMD ["bash", "/app/entrypoint.sh"]
