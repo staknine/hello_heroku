@@ -1,5 +1,7 @@
 # HelloHeroku
 
+HelloHeroku is a demo project for deploying Heroku which was selected as the **Best for Simple Setups and Integrations** in [StakeNine's Best Hosting Providers for Elixir](https://staknine.com/best-cloud-hosting-platforms-elixir-phoenix/?utm_source=github.com&utm_medium=referral&utm_campaign=readme) article.
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
